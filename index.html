@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Formulario de Asistencia</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h2>Formulario de Asistencia</h2>
+
+  <form id="asistenciaForm">
+    <label for="nombre">Nombre:</label><br>
+    <input type="text" id="nombre" name="nombre" required><br><br>
+
+    <label for="departamento">Departamento:</label><br>
+    <select id="departamento" name="departamento" required>
+      <option value="">Seleccione</option>
+      <option value="Amazonas">Amazonas</option>
+      <option value="Ancash">Áncash</option>
+      <option value="Apurímac">Apurímac</option>
+      <option value="Arequipa">Arequipa</option>
+      <!-- Agrega todos los departamentos del Perú -->
+    </select><br><br>
+
+    <label for="zona">Zona:</label><br>
+    <input type="text" id="zona" name="zona" required><br><br>
+
+    <label for="ubicacion">Ubicación (automática):</label><br>
+    <input type="text" id="ubicacion" name="ubicacion" readonly><br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    // Obtener ubicación al cargar la página
+    window.onload = function() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          document.getElementById("ubicacion").value = `${lat}, ${lon}`;
+        }, function(error) {
+          alert("No se pudo obtener la ubicación.");
+        });
+      } else {
+        alert("Tu navegador no soporta geolocalización.");
+      }
+    };
+
+    // Capturar y mostrar datos (puedes adaptar para enviarlos a una hoja o BD)
+    document.getElementById("asistenciaForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const datos = {
+        nombre: document.getElementById("nombre").value,
+        departamento: document.getElementById("departamento").value,
+        zona: document.getElementById("zona").value,
+        ubicacion: document.getElementById("ubicacion").value
+      };
+      console.log("Datos registrados:", datos);
+      alert("¡Asistencia registrada con éxito!");
+      // Aquí puedes enviar datos por AJAX, a Google Sheets, PHP, etc.
+    });
+  </script>
+</body>
+</html>
